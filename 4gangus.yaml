@@ -115,10 +115,10 @@ wifi:
   password: !secret wifi_password
 api:
   encryption:
-    key: xxxxxxxx
+    key: xxxxxxx
 ota:
-  - platform: xxxxx
-    password: xxxxxx   
+  - platform: xxxxxx
+    password: xxxxxx  
 
 web_server:
   port: 80
@@ -268,6 +268,8 @@ binary_sensor:
           state: OFF
       - script.execute: refresh_led_default
 
+
+
 switch:
   - platform: gpio
     id: relay_1
@@ -381,6 +383,7 @@ switch:
 
   - platform: restart
     name: "${friendly_name} Restart"
+    internal: false
 
 light:
   - platform: neopixelbus
@@ -406,49 +409,49 @@ light:
         - script.execute: refresh_led_default
 
   - platform: partition
-    name: "LEDs Button l1"
-    id: leds_button_l1
+    name: "LEDs Button l4"
+    id: leds_button_l4
     internal: false
     segments:
       - id: leds
-        from: 6
-        to: 7      
+        from: 7
+        to: 9  
       - id: leds
-        from: 16
+        from: 15
         to: 17
-  - platform: partition
-    name: "LEDs Button l2"
-    id: leds_button_l2
-    internal: false
-    segments:
-      - id: leds
-        from: 5
-        to: 6   
-      - id: leds
-        from: 17
-        to: 18  
   - platform: partition
     name: "LEDs Button l3"
     id: leds_button_l3
     internal: false
     segments:
       - id: leds
-        from: 4
-        to: 5 
+        from: 5
+        to: 6
       - id: leds
         from: 18
         to: 19
   - platform: partition
-    name: "LEDs Button l4"
-    id: leds_button_l4
+    name: "LEDs Button l2"
+    id: leds_button_l2
     internal: false
     segments:
       - id: leds
         from: 3
-        to: 4    
+        to: 4
       - id: leds
-        from: 19
-        to: 20
+        from: 20
+        to: 21
+  - platform: partition
+    name: "LEDs Button l1"
+    id: leds_button_l1
+    internal: false
+    segments:
+      - id: leds
+        from: 0
+        to: 2   
+      - id: leds
+        from: 22
+        to: 24
 
   - platform: partition
     name: "LEDs Top"
@@ -663,9 +666,9 @@ script:
       - light.turn_on:
           id: leds_button_l3
           brightness: ${button_brightness}
-          red: !lambda "return id(button_color)[0]/100.0;"
-          green: !lambda "return id(button_color)[1]/100.0;"
-          blue:  !lambda "return id(button_color)[2]/100.0;"
+          red: 100%
+          green: 0%
+          blue:  0%
   - id: led_on_button_l4  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE DESTRO ALL'ACCENSIONE
     mode: restart
     then:
@@ -820,8 +823,7 @@ script:
           blue:  !lambda "return id(long_press_color)[2]/100.0;"
           effect: ${long_press_effect}
 
-
-  - id: handle_release     # ATTIVA I BINARY SENSOR TOUCHFIELD 1 2 e 3.
+  - id: handle_release
     mode: restart
     parameters:
       pos: int
@@ -876,3 +878,38 @@ script:
                         - binary_sensor.template.publish:
                             id: touchfield_3
                             state: ON
+
+      - if:
+          condition:
+            lambda: "return ${relay_count}==4;"
+          then:
+            - if:
+                condition:
+                  lambda: "return pos <= 2;"
+                then:
+                  - binary_sensor.template.publish:
+                      id: touchfield_1
+                      state: ON
+
+                else:
+                  - if:
+                      condition:
+                        lambda: "return pos <= 5;"
+                      then:
+                        - binary_sensor.template.publish:
+                            id: touchfield_2
+                            state: ON
+
+                      else:
+                        - if:
+                            condition:
+                              lambda: "return pos <= 8;"
+                            then:
+                              - binary_sensor.template.publish:
+                                  id: touchfield_3
+                                  state: ON
+                            
+                            else:
+                              - binary_sensor.template.publish:
+                                  id: touchfield_4
+                                  state: ON
