@@ -417,8 +417,8 @@ light:
         from: 8
         to: 9
       - id: leds
-        from: 15
-        to: 16
+        from: 14
+        to: 15
   - platform: partition
     name: "LEDs Button l3"
     id: leds_button_l3
@@ -428,66 +428,60 @@ light:
         from: 5
         to: 6
       - id: leds
-        from: 18
-        to: 19
+        from: 17
+        to: 18
   - platform: partition
     name: "LEDs Button l2"
     id: leds_button_l2
     internal: false
     segments:
       - id: leds
-        from: 3
-        to: 4
+        from: 1
+        to: 2
       - id: leds
-        from: 20
-        to: 21
+        from: 21
+        to: 22
   - platform: partition
     name: "LEDs Button l1"
     id: leds_button_l1
     internal: false
     segments:
       - id: leds
-        from: 0
-        to: 1   
+        from: 30
+        to: 31   
       - id: leds
-        from: 22
-        to: 23
+        from: 24
+        to: 25
 
   - platform: partition
     name: "LEDs Top"
     id: leds_top
     internal: false
     segments:
-      - id: leds # perimetro allargato OK - eliminare eventualmente
-        from: 25 
-        to: 30      
+      - id: leds 
+        from: 0 
+        to: 0      
       - id: leds
-        from: 31
-        to: 31        
+        from: 3
+        to: 4        
       - id: leds
-        from: 2
-        to: 2
+        from: 7
+        to: 7
       - id: leds
-        from: 5
-        to: 5 
+        from: 10
+        to: 13 
       - id: leds
-        from: 8
-        to: 8  
-      - id: leds # perimetro allargato OK - eliminare eventualmente
-        from: 9  
-        to: 14   
-      - id: leds #prova effetti parte sotto eliminare eventualmente
-        from: 15
-        to: 15        
-      - id: leds #prova effetti parte sotto eliminare eventualmente
-        from: 18
-        to: 18
-      - id: leds #prova effetti parte sotto eliminare eventualmente
-        from: 21
-        to: 21
-      - id: leds #prova effetti parte sotto eliminare eventualmente
-        from: 24
-        to: 24                         
+        from: 16
+        to: 16  
+      - id: leds
+        from: 19  
+        to: 20   
+      - id: leds
+        from: 23
+        to: 23        
+      - id: leds
+        from: 26
+        to: 29              
     effects:
       - addressable_scan:
           name: "Scan"
@@ -641,7 +635,7 @@ script:
           else:
             - light.turn_off: leds_top
 
-  - id: led_on_button_l1   #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE SINISTRO ALL'ACCENSIONE
+  - id: led_on_button_l1   #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE L1 ALL'ACCENSIONE
     mode: restart
     then:
       - light.turn_on:
@@ -651,7 +645,7 @@ script:
           green: !lambda "return id(button_color)[1]/100.0;"
           blue:  !lambda "return id(button_color)[2]/100.0;"
 
-  - id: led_on_button_l2  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE CENTRALE ALL'ACCENSIONE
+  - id: led_on_button_l2  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE L2 ALL'ACCENSIONE
     mode: restart
     then:
       - light.turn_on:
@@ -660,7 +654,7 @@ script:
           red: !lambda "return id(button_color)[0]/100.0;"
           green: !lambda "return id(button_color)[1]/100.0;"
           blue:  !lambda "return id(button_color)[2]/100.0;"
-  - id: led_on_button_l3  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE CENTRALE ALL'ACCENSIONE
+  - id: led_on_button_l3  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE L3 ALL'ACCENSIONE
     mode: restart
     then:
       - light.turn_on:
@@ -669,7 +663,7 @@ script:
           red: 100%
           green: 0%
           blue:  0%
-  - id: led_on_button_l4  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE DESTRO ALL'ACCENSIONE
+  - id: led_on_button_l4  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE L4 ALL'ACCENSIONE
     mode: restart
     then:
       - light.turn_on:
@@ -680,7 +674,7 @@ script:
           blue:  !lambda "return id(button_color)[2]/100.0;"
 
 
-  - id: led_off_button_l1  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE SINISTRO ALLO SPEGNIMENTO
+  - id: led_off_button_l1  #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE L1 ALLO SPEGNIMENTO
     mode: restart
     then:
       - if:
@@ -697,7 +691,7 @@ script:
             - light.turn_off:
                 id: leds_button_l1
 
-  - id: led_off_button_l2   #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE CENTRALE ALLO SPEGNIMENTO
+  - id: led_off_button_l2   #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE L2 ALLO SPEGNIMENTO
     mode: restart
     then:
       - if:
@@ -713,7 +707,7 @@ script:
           else:
             - light.turn_off:
                 id: leds_button_l2
-  - id: led_off_button_l3   #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE CENTRALE ALLO SPEGNIMENTO
+  - id: led_off_button_l3   #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE L3 ALLO SPEGNIMENTO
     mode: restart
     then:
       - if:
@@ -731,7 +725,7 @@ script:
                 id: leds_button_l3
 
 
-  - id: led_off_button_l4    #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE DESTRO ALLO SPEGNIMENTO
+  - id: led_off_button_l4    #DEFINISCE IL COMPORTAMENTO DEI LED DEL BOTTONE L4 ALLO SPEGNIMENTO
     mode: restart
     then:
       - if:
@@ -913,4 +907,3 @@ script:
                               - binary_sensor.template.publish:
                                   id: touchfield_4
                                   state: ON
-
